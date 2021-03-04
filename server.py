@@ -16,8 +16,9 @@ def main():
     session = Session()
     data = session.query(Employee).all()
 
+    print("Employee Reporters: ")
     for emp in data:
-        print(f"{emp.FirstName} {emp.LastName} @ {emp.BirthDate}")
+        print(f"{emp.FirstName} {emp.LastName} has  reporters.")
     
 
 

@@ -10,7 +10,7 @@ class Employee(Base):
     LastName = Column(String)
     FirstName = Column(String)
     Title = Column(String)
-    ReportsTo = Column(Integer)
+    ReportsTo = Column(Integer, ForeignKey('employee.EmployeeId'))
     BirthDate = Column(DateTime)
     HireDate = Column(DateTime)
     Address = Column(String)
@@ -21,20 +21,7 @@ class Employee(Base):
     Phone = Column(String)
     Fax = Column(String)
     Email = Column(String)
-
-# CREATE TABLE "employees" 
-# ( [EmployeeId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
-# [LastName] NVARCHAR(20) NOT NULL, 
-# [FirstName] NVARCHAR(20) NOT NULL, 
-# [Title] NVARCHAR(30), 
-# [ReportsTo] INTEGER, 
-# [BirthDate] DATETIME, 
-# [HireDate] DATETIME, 
-# [Address] NVARCHAR(70), 
-# [City] NVARCHAR(40), 
-# [State] NVARCHAR(40), 
-# [Country] NVARCHAR(40), 
-# [PostalCode] NVARCHAR(10), [Phone] NVARCHAR(24), [Fax] NVARCHAR(24), [Email] NVARCHAR(60), FOREIGN KEY ([ReportsTo]) REFERENCES "employees" ([EmployeeId]) ON DELETE NO ACTION ON UPDATE NO ACTION )
+    Reporters = relationship("Employee", backref=backref("employees"))
 
 class Genre(Base):
     __tablename__ = "genres"
