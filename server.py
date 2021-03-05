@@ -1,8 +1,9 @@
 from models import *
+from dbFunctions import PrintEmployeeCustomers, PrintManagerEmployees
 
 import os
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 
 def main():
@@ -11,24 +12,27 @@ def main():
     path = "sqlite:///" + os.getcwd() + '/chinook.db'
     print("database address: ", path)
     engine = create_engine(path, echo=False)
-    Session = sessionmaker()
-    Session.configure(bind=engine)
-    session = Session()
-    data = session.query(Employee).all()
+    session = Session(engine)
 
-    print("Employee Reporters: ")
-    for emp in data:
-        print(f"{emp.FirstName} {emp.LastName} has {len(emp.Customers)} customers.")
+    PrintEmployeeCustomers(session, False)
+
+    PrintManagerEmployees(session, False)
+
+    track = Track(Name="MyTrack")
+    playlist = Playlist(Name="NewPlaylist")
+    playlist.Tracks.append(track)
+    print(len(track.Playlists), " ", track.Playlists[0].Name)
     
-    print("------------------------------------")
-    data = session.query(Customer).all()
-    for cust in data:
-        p = [str(invoice.InvoiceId) for invoice in cust.Invoices]
-        print(f"Customer {cust.CustomerId}: Invoice Ids {p}")
 
-    print("------------------------------------")
-    invoice = session.query(Invoice).filter_by(InvoiceId=10).first()
-    print(f"Invoice {invoice.InvoiceId} relates to Customer {invoice.Customer.LastName}")     
+    # print("------------------------------------")
+    # data = session.query(Customer).all()
+    # for cust in data:
+    #     p = [str(invoice.InvoiceId) for invoice in cust.Invoices]
+    #     print(f"Customer {cust.CustomerId}: Invoice Ids {p} -> Supporting employee: {cust.Employee.FirstName} + {cust.Employee.LastName}")
+
+    # print("------------------------------------")
+    # invoice = session.query(Invoice).filter_by(InvoiceId=10).first()
+    # print(f"Invoice {invoice.InvoiceId} relates to Customer {invoice.Customer.LastName}")     
 
 if __name__ == "__main__":
     main()
