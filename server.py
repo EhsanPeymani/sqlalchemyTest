@@ -1,5 +1,5 @@
 from models import *
-from dbFunctions import PrintEmployeeCustomers, PrintManagerEmployees
+from dbFunctions import Functions
 
 import os
 from sqlalchemy import create_engine
@@ -13,16 +13,13 @@ def main():
     print("database address: ", path)
     engine = create_engine(path, echo=False)
     session = Session(engine)
+    functions = Functions(session)
 
-    PrintEmployeeCustomers(session, False)
+    functions.PrintEmployeeCustomers()
 
-    PrintManagerEmployees(session, False)
+    functions.PrintManagerEmployees()
 
-    track = Track(Name="MyTrack")
-    playlist = Playlist(Name="NewPlaylist")
-    playlist.Tracks.append(track)
-    print(len(track.Playlists), " ", track.Playlists[0].Name)
-    
+    functions.PrintCustomerSupports(True)
 
     # print("------------------------------------")
     # data = session.query(Customer).all()

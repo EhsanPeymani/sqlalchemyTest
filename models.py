@@ -28,7 +28,7 @@ class Employee(Base):
     Phone = Column(String)
     Fax = Column(String)
     Email = Column(String)
-    Customers = relationship("Customer", backref=backref("Employee"))
+    Customers = relationship("Customer", backref=backref("SupportEmployee"))
     Manager = relationship("Employee", remote_side=[EmployeeId])
     ReportingEmployees = relationship("Employee", backref=backref("ReportingManager", remote_side=[EmployeeId]))
     # Manager and ReportingManager will be the same thing
@@ -61,6 +61,18 @@ class Invoice(Base):
     BillingCountry = Column(String)
     BillingPostalCode = Column(String(10))
     Total = Column(Float)
+
+class Artist(Base):
+    __tablename__ = "artists"
+    ArtistId = Column(Integer, primary_key=True)
+    Name = Column(String)
+    Albums = relationship("Album", backref=backref("Artist"))
+
+class Album(Base):
+    __tablename__ = "albums"
+    AlbumId = Column(Integer, primary_key=True)
+    Title = Column(String)
+    ArtistId = Column(Integer, ForeignKey("artists.ArtistId"))
 
 class Genre(Base):
     __tablename__ = "genres"
