@@ -61,6 +61,15 @@ class Invoice(Base):
     BillingCountry = Column(String)
     BillingPostalCode = Column(String(10))
     Total = Column(Float)
+    InvoiceItems = relationship("InvoiceItem", backref=backref("Invoice"))
+
+class InvoiceItem(Base):
+    __tablename__ = "invoice_items"
+    InvoiceItemId = Column(Integer, primary_key=True)
+    InvoiceId = Column(Integer, ForeignKey("invoices.InvoiceId"))
+    TrackId = Column(Integer, ForeignKey("tracks.TrackId"))
+    UnitPrice = Column(Float)
+    Quantity = Column(Integer)
 
 class Artist(Base):
     __tablename__ = "artists"
@@ -73,24 +82,25 @@ class Album(Base):
     AlbumId = Column(Integer, primary_key=True)
     Title = Column(String)
     ArtistId = Column(Integer, ForeignKey("artists.ArtistId"))
+    Tracks = relationship("Track", backref=backref("Album"))
 
 class Genre(Base):
     __tablename__ = "genres"
     GenreId = Column(Integer, primary_key=True)
     Name = Column(String)
-    tracks = relationship("Track", backref=backref("Genre"))
+    Tracks = relationship("Track", backref=backref("Genre"))
 
 class MediaType(Base):
     __tablename__ = "media_types"
     MediaTypeId = Column(Integer, primary_key=True)
     Name = Column(String(120))
-    tracks = relationship("Track", backref=backref("MediaType"))
+    Tracks = relationship("Track", backref=backref("MediaType"))
 
 class Track(Base):
     __tablename__ = "tracks"
     TrackId = Column(Integer, primary_key=True)
     Name = Column(String(120))
-    AlbumId = Column(Integer)
+    AlbumId = Column(Integer, ForeignKey("albums.AlbumId"))
     MediaTypeId = Column(Integer, ForeignKey("media_types.MediaTypeId"))
     GenreId = Column(Integer, ForeignKey("genres.GenreId"))
     Composer = Column(String)
@@ -98,7 +108,7 @@ class Track(Base):
     Bytes = Column(Integer)
     UnitPrice = Column(Float)
     Playlists = relationship("Playlist", secondary=playlist_track, back_populates="Tracks")
-    
+    InvoiceItems = relationship("InvoiceItem", back_populates="Track")    
 
 class Playlist(Base):
     __tablename__ = "playlists"
