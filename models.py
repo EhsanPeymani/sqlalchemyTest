@@ -108,7 +108,7 @@ class Track(Base):
     Bytes = Column(Integer)
     UnitPrice = Column(Float)
     Playlists = relationship("Playlist", secondary=playlist_track, back_populates="Tracks")
-    InvoiceItems = relationship("InvoiceItem", back_populates="Track")    
+    InvoiceItems = relationship("InvoiceItem", backref=backref("Track"))    
 
 class Playlist(Base):
     __tablename__ = "playlists"
