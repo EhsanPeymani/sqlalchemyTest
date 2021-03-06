@@ -11,7 +11,7 @@ def main():
 
     path = "sqlite:///" + os.getcwd() + '/chinook.db'
     print("database address: ", path)
-    engine = create_engine(path, echo=False)
+    engine = create_engine(path, echo=True)
     session = Session(engine)
     functions = Functions(session)
 
@@ -21,15 +21,12 @@ def main():
 
     functions.PrintCustomerSupports()
 
-    # print("------------------------------------")
-    # data = session.query(Customer).all()
-    # for cust in data:
-    #     p = [str(invoice.InvoiceId) for invoice in cust.Invoices]
-    #     print(f"Customer {cust.CustomerId}: Invoice Ids {p} -> Supporting employee: {cust.Employee.FirstName} + {cust.Employee.LastName}")
+    functions.PrintArtistAlbumCount()
 
-    # print("------------------------------------")
-    # invoice = session.query(Invoice).filter_by(InvoiceId=10).first()
-    # print(f"Invoice {invoice.InvoiceId} relates to Customer {invoice.Customer.LastName}")     
+    functions.AddAlbum("Big Ones", "Aerosmith")
+    functions.AddAlbum("Shaylin Album 3", "Shaylin")
+
+    functions.PrintArtistTrackCount(True)
 
 if __name__ == "__main__":
     main()
