@@ -19,7 +19,7 @@ def main():
 
     functions.PrintManagerEmployees()
 
-    functions.PrintCustomerSupports(True)
+    functions.PrintCustomerSupports()
 
     # print("------------------------------------")
     # data = session.query(Customer).all()
